@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}我的设备{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>已绑定设备（{{ devices|length }} 台）</h1>
+  {% if devices %}
+  <table>
+    <tr><th>ID</th><th>名称</th><th>确认时间</th><th>最近接受的 TOTP 步数</th><th></th></tr>
+    {% for d in devices %}
+    <tr>
+      <td>{{ d.id }}</td><td>{{ d.name }}</td>
+      <td class="muted">{{ d.confirmed_at|round(1) if d.confirmed_at else '—' }}</td>
+      <td><code>{{ d.last_counter if d.last_counter is not none else '—' }}</code></td>
+      <td>
+        <form method="post" action="{{ url_for('mfa.delete_device', device_id=d.id) }}"
+              onsubmit="return confirm('确认移除设备 {{ d.name }}？该操作需要二次验证。')">
+          <button class="danger" type="submit">移除</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="muted">还没有已确认的设备，请先绑定一台认证器。</p>
+  {% endif %}
+  <p class="row">
+    <a class="btn" href="{{ url_for('mfa.enroll') }}">绑定新设备</a>
+    <a class="btn secondary" href="{{ url_for('mfa.recovery') }}">手机丢失 / 换绑恢复</a>
+  </p>
+</div>
+
+<div class="card">
+  <h1>备用码</h1>
+  <p>剩余可用 <strong>{{ backup_counts.unused }}</strong> / {{ backup_counts.total }} 个。
+     备用码只存哈希，生成后仅展示一次明文。</p>
+  <p><a class="btn secondary" href="{{ url_for('mfa.backup_codes') }}">查看 / 重新生成</a>
+     <a class="btn secondary" href="{{ url_for('mfa.disable') }}"
+        onclick="event.preventDefault();
+        if(confirm('停用 MFA 将清除全部设备和备用码，确认？')){
+          const f=document.createElement('form');f.method='post';
+          f.action='{{ url_for('mfa.disable') }}';document.body.appendChild(f);f.submit();}">
+        停用 MFA</a>
+  </p>
+</div>
+{% endblock %}

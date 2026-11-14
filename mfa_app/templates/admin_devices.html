@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}用户设备{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>{{ target.username }} 的设备</h1>
+  <table>
+    <tr><th>ID</th><th>名称</th><th>状态</th><th>创建时间</th><th>确认时间</th><th>最近步数</th></tr>
+    {% for d in devices %}
+    <tr>
+      <td>{{ d.id }}</td><td>{{ d.name }}</td>
+      <td>{% if d.confirmed %}<span class="pill ok">已确认</span>
+          {% else %}<span class="pill pending">待确认</span>{% endif %}</td>
+      <td class="muted">{{ d.created_at|round(1) }}</td>
+      <td class="muted">{{ d.confirmed_at|round(1) if d.confirmed_at else '—' }}</td>
+      <td><code>{{ d.last_counter if d.last_counter is not none else '—' }}</code></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="muted">无设备。</td></tr>
+    {% endfor %}
+  </table>
+  <p><a class="btn secondary" href="{{ url_for('admin.index') }}">返回</a></p>
+</div>
+{% endblock %}

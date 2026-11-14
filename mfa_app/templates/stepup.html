@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}二次验证{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>敏感操作二次验证</h1>
+  <p class="muted">该操作需要重新验证身份（step-up，2 分钟内有效）。</p>
+  <form method="post">
+    <input type="hidden" name="next" value="{{ next or '' }}">
+    <label>TOTP 码 / 备用码</label>
+    <input name="code" autocomplete="one-time-code" required autofocus>
+    <p><button type="submit">确认</button></p>
+  </form>
+</div>
+{% endblock %}

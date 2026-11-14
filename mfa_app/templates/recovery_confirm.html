@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}恢复：确认新设备{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>确认新认证器</h1>
+  <p>密钥：<code>{{ pending.secret }}</code></p>
+  <form method="post" action="{{ url_for('mfa.recovery_confirm', device_id=pending.device_id) }}">
+    <label>输入新设备 App 的 6 位验证码</label>
+    <input name="code" autocomplete="one-time-code" required autofocus>
+    <p><button type="submit">完成换绑</button></p>
+  </form>
+</div>
+{% endblock %}

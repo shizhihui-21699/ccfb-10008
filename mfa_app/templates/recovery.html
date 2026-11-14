@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}换绑恢复{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>设备换绑 / 恢复流程</h1>
+  <p class="muted">手机丢失或更换时：输入一个未使用的备用码验证身份 → 获得 5 分钟恢复窗口 →
+     在新设备上绑定认证器；新设备确认后，旧设备将全部注销。</p>
+  <form method="post">
+    <label>备用码</label>
+    <input name="code" autocomplete="one-time-code" required autofocus>
+    <p><button type="submit">开始恢复</button></p>
+  </form>
+</div>
+{% endblock %}

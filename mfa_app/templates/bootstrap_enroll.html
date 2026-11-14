@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}绑定首台设备{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>首次登录：绑定认证器</h1>
+  <p class="muted">你的账户还没有 MFA 设备，需要先绑定一台认证器（如 Google Authenticator），
+     绑定成功后才会完成登录。</p>
+  <form method="post">
+    <label>设备名称</label>
+    <input name="name" value="首台设备" autofocus>
+    <p><button type="submit">生成密钥</button></p>
+  </form>
+</div>
+{% endblock %}

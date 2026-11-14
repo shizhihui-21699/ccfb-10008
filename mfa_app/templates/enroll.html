@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}绑定设备{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>绑定新认证器</h1>
+  <form method="post">
+    <label>设备名称（如：iPhone 15、工作安卓机）</label>
+    <input name="name" required autofocus placeholder="我的手机">
+    <p><button type="submit">生成密钥</button></p>
+  </form>
+</div>
+{% endblock %}

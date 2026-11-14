@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}审计记录{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>审计记录（共 {{ total }} 条）</h1>
+  <form method="get" class="row">
+    <label style="margin:0">用户名 <input name="username" value="{{ username or '' }}" style="margin-left:6px"></label>
+    <label style="margin:0">动作
+      <select name="action" style="padding:9px;border:1px solid var(--line);border-radius:8px;margin-left:6px">
+        <option value="">全部</option>
+        {% for a in actions %}
+        <option value="{{ a }}" {% if a == action %}selected{% endif %}>{{ a }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit">筛选</button>
+  </form>
+  <table style="margin-top:14px">
+    <tr><th>时间</th><th>用户</th><th>动作</th><th>结果</th><th>IP</th><th>设备</th><th>详情</th></tr>
+    {% for r in rows %}
+    <tr>
+      <td class="muted">{{ r.ts|round(1) }}</td>
+      <td>{{ r.username or ('#' ~ r.user_id) if r.user_id else '—' }}</td>
+      <td><code>{{ r.action }}</code></td>
+      <td>{% if r.result == 'success' %}<span class="pill ok">成功</span>
+          {% else %}<span class="pill lock">拒绝</span>{% endif %}</td>
+      <td class="muted">{{ r.ip or '—' }}</td>
+      <td>{{ r.device_id or '—' }}</td>
+      <td class="muted" style="max-width:320px">{{ r.detail or '' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="muted">没有匹配记录。</td></tr>
+    {% endfor %}
+  </table>
+  <div class="pager" style="margin-top:12px">
+    {% if page > 1 %}<a class="btn secondary" href="?page={{ page-1 }}&action={{ action or '' }}&username={{ username or '' }}">上一页</a>{% endif %}
+    <span class="muted">第 {{ page }} / {{ pages }} 页</span>
+    {% if page < pages %}<a class="btn secondary" href="?page={{ page+1 }}&action={{ action or '' }}&username={{ username or '' }}">下一页</a>{% endif %}
+  </div>
+</div>
+{% endblock %}

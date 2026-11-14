@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}备用码{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>备用码</h1>
+  <p class="muted">剩余可用 <strong>{{ counts.unused }}</strong> / {{ counts.total }}。
+     每个备用码只能使用一次，服务器仅保存其 HMAC 哈希。</p>
+  {% if codes %}
+    <p><strong>请立即保存，离开页面后无法再次查看：</strong></p>
+    <div class="codes">
+      {% for c in codes %}<div>{{ c }}</div>{% endfor %}
+    </div>
+  {% endif %}
+  <form method="post" onsubmit="return confirm('重新生成会使全部旧备用码作废，确认？')">
+    <p><button type="submit" class="{{ 'secondary' if codes else '' }}">
+      {{ '重新生成备用码（敏感操作，需二次验证）' if codes else '生成备用码（敏感操作，需二次验证）' }}
+    </button></p>
+  </form>
+</div>
+{% endblock %}

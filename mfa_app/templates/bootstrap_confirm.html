@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}确认首台设备{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>录入密钥并确认</h1>
+  <p>在认证器 App 中录入密钥：<code style="font-size:17px">{{ pending.secret }}</code></p>
+  <p class="muted" style="word-break:break-all">{{ pending.uri }}</p>
+  <form method="post" action="{{ url_for('auth.bootstrap_confirm', device_id=pending.device_id) }}">
+    <label>输入 App 当前显示的 6 位验证码</label>
+    <input name="code" autocomplete="one-time-code" required autofocus>
+    <p><button type="submit">确认并登录</button></p>
+  </form>
+</div>
+{% endblock %}

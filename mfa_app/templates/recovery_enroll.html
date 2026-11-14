@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}恢复：绑定新设备{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>绑定替换设备</h1>
+  <p class="muted">恢复窗口 5 分钟内有效。</p>
+  <form method="post">
+    <label>新设备名称</label>
+    <input name="name" placeholder="新手机" autofocus>
+    <p><button type="submit">生成密钥</button></p>
+  </form>
+</div>
+{% endblock %}

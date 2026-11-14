@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}登录{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>登录</h1>
+  <form method="post">
+    <label>用户名</label>
+    <input name="username" autocomplete="username" required autofocus>
+    <label>密码</label>
+    <input name="password" type="password" autocomplete="current-password" required>
+    <p><button type="submit">下一步（MFA 验证）</button></p>
+  </form>
+</div>
+{% endblock %}

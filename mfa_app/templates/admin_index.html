@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}管理后台{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>用户与锁定状态</h1>
+  <table>
+    <tr><th>ID</th><th>用户名</th><th>角色</th><th>失败次数</th><th>锁定至</th><th>设备</th></tr>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.id }}</td><td>{{ u.username }}</td>
+      <td>{% if u.is_admin %}<span class="pill ok">管理员</span>{% else %}用户{% endif %}</td>
+      <td>
+        {% if u.failed_attempts >= 5 %}<span class="pill lock">{{ u.failed_attempts }}</span>
+        {% else %}{{ u.failed_attempts }}{% endif %}
+      </td>
+      <td class="muted">{{ u.locked_until|round(1) if u.locked_until else '—' }}</td>
+      <td><a href="{{ url_for('admin.user_devices', user_id=u.id) }}">查看设备</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p class="muted">手动解锁请使用 CLI：<code>flask --app run.py unlock &lt;用户名&gt;</code>（操作会写入审计）。</p>
+</div>
+<div class="card">
+  <h1>全部设备（{{ devices|length }}）</h1>
+  <table>
+    <tr><th>ID</th><th>用户</th><th>名称</th><th>状态</th><th>最近步数</th></tr>
+    {% for d in devices %}
+    <tr>
+      <td>{{ d.id }}</td><td>{{ d.username }}</td><td>{{ d.name }}</td>
+      <td>{% if d.confirmed %}<span class="pill ok">已确认</span>
+          {% else %}<span class="pill pending">待确认</span>{% endif %}</td>
+      <td><code>{{ d.last_counter if d.last_counter is not none else '—' }}</code></td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}
